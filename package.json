@@ -1,5 +1,20 @@
 {
   "dependencies": {
-    "@govbr-ds/core": "^3.6.0"
-  }
+    "@govbr-ds/core": "^3.6.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "express": "^4.21.1",
+    "googleapis": "^144.0.0",
+    "mapbox-gl": "^3.7.0"
+  },
+  "name": "obras---voce-por-dentro",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
