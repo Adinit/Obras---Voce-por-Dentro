@@ -19,7 +19,7 @@ let staticData = [];
 function loadCSVData() {
   const csvFilePath = path.join(__dirname, 'Obras.csv'); // Path to your CSV file
   fs.createReadStream(csvFilePath)
-    .pipe(csv({ separator: '\t' })) // Use tab as separator
+    .pipe(csv({ separator: ';' })) // Use tab as separator
     .on('data', (row) => {
       console.log('Parsed row:', row); // Log the parsed row
       staticData.push(row);
