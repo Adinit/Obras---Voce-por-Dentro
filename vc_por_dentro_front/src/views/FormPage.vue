@@ -1,59 +1,72 @@
 <script setup>
-import Map from '../components/Map.vue';
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import QRCode from 'qrcode';
+import Map from '../components/Map.vue'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import QRCode from 'qrcode'
 
-const route = useRoute();
-const router = useRouter();
-const obra = ref(null);
-const qrCodeUrl = ref('');
-const detailsUrl = ref('');
+const route = useRoute()
+const router = useRouter()
+const obra = ref(null)
+const qrCodeUrl = ref('')
+const detailsUrl = ref('')
 
 const fetchData = () => {
-  const codigoObra = route.params.codigoObra;
-  fetch('https://raw.githubusercontent.com/Adinit/Obras---Voce-por-Dentro/refs/heads/main/projects.json')
+  const codigoObra = route.params.codigoObra
+  fetch(
+    'https://raw.githubusercontent.com/Adinit/Obras---Voce-por-Dentro/refs/heads/main/projects.json',
+  )
     .then(response => response.json())
     .then(data => {
-      obra.value = data.find(item => item.codigoObra === codigoObra);
-      generateQRCode();
+      obra.value = data.find(item => item.codigoObra === codigoObra)
+      generateQRCode()
     })
-    .catch(error => console.error('Erro ao buscar os dados:', error));
-};
+    .catch(error => console.error('Erro ao buscar os dados:', error))
+}
 
 const generateQRCode = () => {
   if (obra.value) {
     const detalhesUrl = router.resolve({
       name: 'projetos',
-      params: { codigoObra: obra.value.codigoObra, nomeObra: obra.value.nomeDaObra },
-    }).href;
+      params: {
+        codigoObra: obra.value.codigoObra,
+        nomeObra: obra.value.nomeDaObra,
+      },
+    }).href
 
-    const baseURL = window.location.origin;
+    const baseURL = window.location.origin
 
-    detailsUrl.value = `${baseURL}${detalhesUrl}`;
+    detailsUrl.value = `${baseURL}${detalhesUrl}`
 
     QRCode.toDataURL(detailsUrl.value, { width: 200 }, (err, url) => {
-      if (!err) qrCodeUrl.value = url;
-    });
+      if (!err) qrCodeUrl.value = url
+    })
   }
-};
+}
 
-onMounted(fetchData);
+onMounted(fetchData)
 </script>
 
 <template>
   <div class="form-container">
     <h2>Detalhes da Obra</h2>
     <h3>{{ obra?.nomeDaObra }}</h3>
-    <div class="form-row"  v-if="obra">
-      <Map :coordinates="[obra?.latitude, obra?.longitude]" :marker-name="obra?.nomeDaObra" />
+    <div class="form-row" v-if="obra">
+      <Map
+        :coordinates="[obra?.latitude, obra?.longitude]"
+        :marker-name="obra?.nomeDaObra"
+      />
     </div>
-    <div class="form-row"  v-if="obra">
+    <div class="form-row" v-if="obra">
       <!-- Left Column -->
       <div class="form-column">
         <div class="form-group">
           <label for="codigoObra">Código da Obra</label>
-          <input id="codigoObra" type="text" v-model="obra.codigoObra" readonly />
+          <input
+            id="codigoObra"
+            type="text"
+            v-model="obra.codigoObra"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="processo">Processo</label>
@@ -61,15 +74,30 @@ onMounted(fetchData);
         </div>
         <div class="form-group">
           <label for="secretariaContratante">Secretaria Contratante</label>
-          <input id="secretariaContratante" type="text" v-model="obra.secretariaContratante" readonly />
+          <input
+            id="secretariaContratante"
+            type="text"
+            v-model="obra.secretariaContratante"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="secretariaResponsavel">Secretaria Responsável</label>
-          <input id="secretariaResponsavel" type="text" v-model="obra.secretariaResponsavel" readonly />
+          <input
+            id="secretariaResponsavel"
+            type="text"
+            v-model="obra.secretariaResponsavel"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="subprefeitura">Subprefeitura</label>
-          <input id="subprefeitura" type="text" v-model="obra.subprefeitura" readonly />
+          <input
+            id="subprefeitura"
+            type="text"
+            v-model="obra.subprefeitura"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="regiao">Região</label>
@@ -89,11 +117,21 @@ onMounted(fetchData);
       <div class="form-column">
         <div class="form-group">
           <label for="nomeDaObra">Nome da Obra</label>
-          <input id="nomeDaObra" type="text" v-model="obra.nomeDaObra" readonly />
+          <input
+            id="nomeDaObra"
+            type="text"
+            v-model="obra.nomeDaObra"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="escopoDoContrato">Escopo do Contrato</label>
-          <input id="escopoDoContrato" type="text" v-model="obra.escopoDoContrato" readonly />
+          <input
+            id="escopoDoContrato"
+            type="text"
+            v-model="obra.escopoDoContrato"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="categoria">Categoria</label>
@@ -101,11 +139,21 @@ onMounted(fetchData);
         </div>
         <div class="form-group">
           <label for="subcategoria">Subcategoria</label>
-          <input id="subcategoria" type="text" v-model="obra.subcategoria" readonly />
+          <input
+            id="subcategoria"
+            type="text"
+            v-model="obra.subcategoria"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="classificacao">Classificação</label>
-          <input id="classificacao" type="text" v-model="obra.classificacao" readonly />
+          <input
+            id="classificacao"
+            type="text"
+            v-model="obra.classificacao"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="status">Status</label>
@@ -113,36 +161,71 @@ onMounted(fetchData);
         </div>
         <div class="form-group">
           <label for="fontesDeRecurso">Fontes de Recurso</label>
-          <input id="fontesDeRecurso" type="text" v-model="obra.fontesDeRecurso" readonly />
+          <input
+            id="fontesDeRecurso"
+            type="text"
+            v-model="obra.fontesDeRecurso"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="dtInicioDaObra">Data de Início da Obra</label>
-          <input id="dtInicioDaObra" type="text" v-model="obra.dtInicioDaObra" readonly />
+          <input
+            id="dtInicioDaObra"
+            type="text"
+            v-model="obra.dtInicioDaObra"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="dtTerminoDaObra">Data de Término da Obra</label>
-          <input id="dtTerminoDaObra" type="text" v-model="obra.dtTerminoDaObra" readonly />
+          <input
+            id="dtTerminoDaObra"
+            type="text"
+            v-model="obra.dtTerminoDaObra"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="numeroDoContrato">Número do Contrato</label>
-          <input id="numeroDoContrato" type="text" v-model="obra.numeroDoContrato" readonly />
+          <input
+            id="numeroDoContrato"
+            type="text"
+            v-model="obra.numeroDoContrato"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="empresaContratada">Empresa Contratada</label>
-          <input id="empresaContratada" type="text" v-model="obra.empresaContratada" readonly />
+          <input
+            id="empresaContratada"
+            type="text"
+            v-model="obra.empresaContratada"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="cnpjContratada">CNPJ da Contratada</label>
-          <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
+          <input
+            id="cnpjContratada"
+            type="text"
+            v-model="obra.cnpjContratada"
+            readonly
+          />
         </div>
         <div class="form-group">
           <label for="programaDeMetas">Programa de Metas</label>
-          <input id="programaDeMetas" type="text" v-model="obra.programaDeMetas" readonly />
+          <input
+            id="programaDeMetas"
+            type="text"
+            v-model="obra.programaDeMetas"
+            readonly
+          />
         </div>
       </div>
     </div>
     <p v-if="!obra">Carregando dados...</p>
-    <div class="qr-code-section" v-if="qrCodeUrl" >
+    <div class="qr-code-section" v-if="qrCodeUrl">
       <h3>QR Code do Projeto</h3>
       <img :src="qrCodeUrl" alt="QR Code do Projeto" />
     </div>
