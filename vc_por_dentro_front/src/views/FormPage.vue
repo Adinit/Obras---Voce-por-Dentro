@@ -54,10 +54,6 @@ export default {
       <!-- Left Column -->
       <div class="form-column">
         <div class="form-group">
-          <label for="codigoObra">Código da Obra</label>
-          <input id="codigoObra" type="text" v-model="obra.codigoObra" readonly />
-        </div>
-        <div class="form-group">
           <label for="processo">Processo</label>
           <input id="processo" type="text" v-model="obra.processo" readonly />
         </div>
@@ -114,10 +110,6 @@ export default {
           <input id="status" type="text" v-model="obra.status" readonly />
         </div>
         <div class="form-group">
-          <label for="fontesDeRecurso">Fontes de Recurso</label>
-          <input id="fontesDeRecurso" type="text" v-model="obra.fontesDeRecurso" readonly />
-        </div>
-        <div class="form-group">
           <label for="dtInicioDaObra">Data de Início da Obra</label>
           <input id="dtInicioDaObra" type="text" v-model="obra.dtInicioDaObra" readonly />
         </div>
@@ -136,10 +128,6 @@ export default {
         <div class="form-group">
           <label for="cnpjContratada">CNPJ da Contratada</label>
           <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
-        </div>
-        <div class="form-group">
-          <label for="programaDeMetas">Programa de Metas</label>
-          <input id="programaDeMetas" type="text" v-model="obra.programaDeMetas" readonly />
         </div>
       </div>
     </div>
