@@ -1,7 +1,7 @@
 <script setup>
 import Map from '../components/Map.vue'
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 import QRCode from 'qrcode'
 
 const route = useRoute()
@@ -47,6 +47,7 @@ onMounted(fetchData)
 </script>
 
 <template>
+  <RouterLink to="/">Voltar para a página inicial</RouterLink>
   <div class="form-container">
     <h2>Detalhes da Obra</h2>
     <h3>{{ obra?.nomeDaObra }}</h3>
