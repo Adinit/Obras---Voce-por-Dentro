@@ -11,36 +11,6 @@ export default {
     }
   },
   computed: {
-    leftColumnAttributes() {
-      return {
-        codigoObra: this.obra?.codigoObra,
-        processo: this.obra?.processo,
-        secretariaContratante: this.obra?.secretariaContratante,
-        secretariaResponsavel: this.obra?.secretariaResponsavel,
-        subprefeitura: this.obra?.subprefeitura,
-        regiao: this.obra?.regiao,
-        distrito: this.obra?.distrito,
-        local: this.obra?.local,
-      }
-    },
-    rightColumnAttributes() {
-      // Remover latitude e longitude
-      return {
-        nomeDaObra: this.obra?.nomeDaObra,
-        escopoDoContrato: this.obra?.escopoDoContrato,
-        categoria: this.obra?.categoria,
-        subcategoria: this.obra?.subcategoria,
-        classificacao: this.obra?.classificacao,
-        status: this.obra?.status,
-        fontesDeRecurso: this.obra?.fontesDeRecurso,
-        dtInicioDaObra: this.obra?.dtInicioDaObra,
-        dtTerminoDaObra: this.obra?.dtTerminoDaObra,
-        numeroDoContrato: this.obra?.numeroDoContrato,
-        empresaContratada: this.obra?.empresaContratada,
-        cnpjContratada: this.obra?.cnpjContratada,
-        programaDeMetas: this.obra?.programaDeMetas,
-      }
-    },
     coordinates() {
       return {
         latitude: this.obra?.latitude,
@@ -52,12 +22,6 @@ export default {
     this.fetchData()
   },
   methods: {
-    formatLabel(key) {
-      return key
-        .split(/(?=[A-Z])/)
-        .join(' ')
-        .replace(/^./, str => str.toUpperCase())
-    },
     fetchData() {
       const codigoObra = this.$route.params.codigoObra // Obtém o código da obra via URL
       fetch(
@@ -79,44 +43,103 @@ export default {
 <template>
   <div class="form-container">
     <h2>Detalhes Da Obra</h2>
-    <h3>{{ rightColumnAttributes['nomeDaObra'] }}</h3>
+    <h3>{{ obra?.nomeDaObra }}</h3>
     <div class="form-row">
       <Map
         :coordinates="[coordinates['latitude'], coordinates['longitude']]"
-        :marker-name="rightColumnAttributes['nomeDaObra']"
+        :marker-name="obra?.nomeDaObra"
       />
     </div>
     <div class="form-row">
+      <!-- Left Column -->
       <div class="form-column">
-        <div
-          class="form-group"
-          v-for="(value, key) in leftColumnAttributes"
-          :key="key"
-        >
-          <label :for="key">{{ formatLabel(key) }}</label>
-          <input
-            v-if="key !== 'origemDosDados'"
-            :id="key"
-            type="text"
-            v-model="obra[key]"
-            readonly
-          />
+        <div class="form-group">
+          <label for="codigoObra">Código da Obra</label>
+          <input id="codigoObra" type="text" v-model="obra.codigoObra" readonly />
+        </div>
+        <div class="form-group">
+          <label for="processo">Processo</label>
+          <input id="processo" type="text" v-model="obra.processo" readonly />
+        </div>
+        <div class="form-group">
+          <label for="secretariaContratante">Secretaria Contratante</label>
+          <input id="secretariaContratante" type="text" v-model="obra.secretariaContratante" readonly />
+        </div>
+        <div class="form-group">
+          <label for="secretariaResponsavel">Secretaria Responsável</label>
+          <input id="secretariaResponsavel" type="text" v-model="obra.secretariaResponsavel" readonly />
+        </div>
+        <div class="form-group">
+          <label for="subprefeitura">Subprefeitura</label>
+          <input id="subprefeitura" type="text" v-model="obra.subprefeitura" readonly />
+        </div>
+        <div class="form-group">
+          <label for="regiao">Região</label>
+          <input id="regiao" type="text" v-model="obra.regiao" readonly />
+        </div>
+        <div class="form-group">
+          <label for="distrito">Distrito</label>
+          <input id="distrito" type="text" v-model="obra.distrito" readonly />
+        </div>
+        <div class="form-group">
+          <label for="local">Local</label>
+          <input id="local" type="text" v-model="obra.local" readonly />
         </div>
       </div>
+
+      <!-- Right Column -->
       <div class="form-column">
-        <div
-          class="form-group"
-          v-for="(value, key) in rightColumnAttributes"
-          :key="key"
-        >
-          <label :for="key">{{ formatLabel(key) }}</label>
-          <input
-            v-if="key !== 'origemDosDados'"
-            :id="key"
-            type="text"
-            v-model="obra[key]"
-            readonly
-          />
+        <div class="form-group">
+          <label for="nomeDaObra">Nome da Obra</label>
+          <input id="nomeDaObra" type="text" v-model="obra.nomeDaObra" readonly />
+        </div>
+        <div class="form-group">
+          <label for="escopoDoContrato">Escopo do Contrato</label>
+          <input id="escopoDoContrato" type="text" v-model="obra.escopoDoContrato" readonly />
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input id="categoria" type="text" v-model="obra.categoria" readonly />
+        </div>
+        <div class="form-group">
+          <label for="subcategoria">Subcategoria</label>
+          <input id="subcategoria" type="text" v-model="obra.subcategoria" readonly />
+        </div>
+        <div class="form-group">
+          <label for="classificacao">Classificação</label>
+          <input id="classificacao" type="text" v-model="obra.classificacao" readonly />
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <input id="status" type="text" v-model="obra.status" readonly />
+        </div>
+        <div class="form-group">
+          <label for="fontesDeRecurso">Fontes de Recurso</label>
+          <input id="fontesDeRecurso" type="text" v-model="obra.fontesDeRecurso" readonly />
+        </div>
+        <div class="form-group">
+          <label for="dtInicioDaObra">Data de Início da Obra</label>
+          <input id="dtInicioDaObra" type="text" v-model="obra.dtInicioDaObra" readonly />
+        </div>
+        <div class="form-group">
+          <label for="dtTerminoDaObra">Data de Término da Obra</label>
+          <input id="dtTerminoDaObra" type="text" v-model="obra.dtTerminoDaObra" readonly />
+        </div>
+        <div class="form-group">
+          <label for="numeroDoContrato">Número do Contrato</label>
+          <input id="numeroDoContrato" type="text" v-model="obra.numeroDoContrato" readonly />
+        </div>
+        <div class="form-group">
+          <label for="empresaContratada">Empresa Contratada</label>
+          <input id="empresaContratada" type="text" v-model="obra.empresaContratada" readonly />
+        </div>
+        <div class="form-group">
+          <label for="cnpjContratada">CNPJ da Contratada</label>
+          <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
+        </div>
+        <div class="form-group">
+          <label for="programaDeMetas">Programa de Metas</label>
+          <input id="programaDeMetas" type="text" v-model="obra.programaDeMetas" readonly />
         </div>
       </div>
     </div>
