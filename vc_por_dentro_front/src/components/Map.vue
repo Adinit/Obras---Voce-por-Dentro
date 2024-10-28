@@ -1,62 +1,84 @@
 <script>
-import { onMounted, toRefs, defineProps } from 'vue'
+import { onMounted, ref } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Map',
   props: {
     coordinates: {
       type: Array,
-      default: () => [-23.55052, -46.633308], // Coordenadas padrão
+      default: () => [-23.55052, -46.633308],
     },
     markerName: {
       type: String,
-      default: 'Marcador', // Nome padrão do marcador
+      default: 'Projeto',
     },
     addAllMarkers: {
       type: Boolean,
-      default: false, // Valor padrão
+      default: false,
     },
   },
   setup(props) {
-    const { coordinates, markerName, addAllMarkers } = toRefs(props)
+    const map = ref(null)
+    const router = useRouter()
 
     onMounted(() => {
-      const map = L.map('map').setView(coordinates.value, 12)
+      map.value = L.map('map').setView(props.coordinates, 12)
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-      }).addTo(map)
+      }).addTo(map.value)
 
-      // Adiciona um marcador nas coordenadas passadas apenas se addAllMarkers for false
-      if (!addAllMarkers.value) {
-        L.marker(coordinates.value)
-          .addTo(map)
-          .bindPopup(markerName.value)
-          .openPopup()
-      }
-
-      // Se addAllMarkers for verdadeiro, carrega os marcadores do JSON
-      if (addAllMarkers.value) {
+      if (props.addAllMarkers) {
         fetch(
           'https://raw.githubusercontent.com/Adinit/Obras---Voce-por-Dentro/refs/heads/main/projects.json',
         )
           .then(response => response.json())
           .then(data => {
             data.forEach(item => {
-              const { latitude, longitude, codigoObra, nomeDaObra } = item
+              const projectLink = router.resolve({
+                name: 'projetos', // Defina o nome da rota ou o path apropriado
+                params: {
+                  codigoObra: item.codigoObra,
+                  nomeObra: item.nomeDaObra,
+                },
+              }).href
 
-              // Cria um link no popup
-              const link = `<a href="./projetos/${codigoObra}/${nomeDaObra}" style="text-decoration: none;">${nomeDaObra}</a>`
-              L.marker([latitude, longitude]).addTo(map).bindPopup(link) // Usa o link no popup
+              const popupContent = `
+                <div>
+                  <strong>${item.nomeDaObra}</strong><br />
+                  <a href="${projectLink}">Ver Detalhes</a>
+                </div>`
+
+              const marker = L.marker([item.latitude, item.longitude]).addTo(
+                map.value,
+              )
+              marker.bindPopup(popupContent)
             })
           })
-          .catch(error => {
-            console.error('Erro ao buscar os dados:', error)
-          })
+      } else {
+        const marker = L.marker(props.coordinates).addTo(map.value)
+        const projectLink = router.resolve({
+          name: 'projetos', // Substitua com o nome ou path da rota correto
+          params: {
+            codigoObra: props.coordinates[0],
+            nomeObra: props.markerName,
+          },
+        }).href
+
+        const popupContent = `
+          <div>
+            <strong>${props.markerName}</strong><br />
+            <a href="${projectLink}">Ver Detalhes</a>
+          </div>`
+
+        marker.bindPopup(popupContent)
       }
     })
+
+    return { map }
   },
 }
 </script>
