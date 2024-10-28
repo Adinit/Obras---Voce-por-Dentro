@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const homeUrl = router.resolve({ name: 'home' }).href
+</script>
 
 <template>
   <br-header
@@ -8,6 +13,6 @@
     placeholder-search="Digite o texto da pesquisa"
     label-search="Que obra você procura?"
     has-title-link="true"
-    title-link-url="http://localhost:5173/"
+    :title-link-url="homeUrl"
   ></br-header>
 </template>
