@@ -1,56 +1,54 @@
 <script setup>
-import Map from '../components/Map.vue'
-</script>
+import Map from '../components/Map.vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import QRCode from 'qrcode';
 
-<script>
-export default {
-  name: 'FormPage',
-  data() {
-    return {
-      obra: null,
-    }
-  },
-  computed: {
-    coordinates() {
-      return {
-        latitude: this.obra?.latitude,
-        longitude: this.obra?.longitude,
-      }
-    },
-  },
-  created() {
-    this.fetchData()
-  },
-  methods: {
-    fetchData() {
-      const codigoObra = this.$route.params.codigoObra // Obtém o código da obra via URL
-      fetch(
-        'https://raw.githubusercontent.com/Adinit/Obras---Voce-por-Dentro/refs/heads/main/projects.json',
-      )
-        .then(response => response.json())
-        .then(data => {
-          // Busca a obra pelo código
-          this.obra = data.find(item => item.codigoObra === codigoObra)
-        })
-        .catch(error => {
-          console.error('Erro ao buscar os dados:', error)
-        })
-    },
-  },
-}
+const route = useRoute();
+const router = useRouter();
+const obra = ref(null);
+const qrCodeUrl = ref('');
+const detailsUrl = ref('');
+
+const fetchData = () => {
+  const codigoObra = route.params.codigoObra;
+  fetch('https://raw.githubusercontent.com/Adinit/Obras---Voce-por-Dentro/refs/heads/main/projects.json')
+    .then(response => response.json())
+    .then(data => {
+      obra.value = data.find(item => item.codigoObra === codigoObra);
+      generateQRCode();
+    })
+    .catch(error => console.error('Erro ao buscar os dados:', error));
+};
+
+const generateQRCode = () => {
+  if (obra.value) {
+    const detalhesUrl = router.resolve({
+      name: 'projetos',
+      params: { codigoObra: obra.value.codigoObra, nomeObra: obra.value.nomeDaObra },
+    }).href;
+
+    const baseURL = window.location.origin;
+
+    detailsUrl.value = `${baseURL}${detalhesUrl}`;
+
+    QRCode.toDataURL(detailsUrl.value, { width: 200 }, (err, url) => {
+      if (!err) qrCodeUrl.value = url;
+    });
+  }
+};
+
+onMounted(fetchData);
 </script>
 
 <template>
   <div class="form-container">
-    <h2>Detalhes Da Obra</h2>
+    <h2>Detalhes da Obra</h2>
     <h3>{{ obra?.nomeDaObra }}</h3>
-    <div class="form-row">
-      <Map
-        :coordinates="[coordinates['latitude'], coordinates['longitude']]"
-        :marker-name="obra?.nomeDaObra"
-      />
+    <div class="form-row"  v-if="obra">
+      <Map :coordinates="[obra?.latitude, obra?.longitude]" :marker-name="obra?.nomeDaObra" />
     </div>
-    <div class="form-row">
+    <div class="form-row"  v-if="obra">
       <!-- Left Column -->
       <div class="form-column">
         <div class="form-group">
@@ -144,6 +142,10 @@ export default {
       </div>
     </div>
     <p v-if="!obra">Carregando dados...</p>
+    <div class="qr-code-section" v-if="qrCodeUrl" >
+      <h3>QR Code do Projeto</h3>
+      <img :src="qrCodeUrl" alt="QR Code do Projeto" />
+    </div>
   </div>
 </template>
 
@@ -184,5 +186,10 @@ input {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+}
+
+.qr-code-section {
+  text-align: center;
+  margin-top: 20px;
 }
 </style>
