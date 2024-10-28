@@ -81,7 +81,16 @@ export default {
           <label for="local">Local</label>
           <input id="local" type="text" v-model="obra.local" readonly />
         </div>
+        <div class="form-group">
+          <label for="empresaContratada">Empresa Contratada</label>
+          <input id="empresaContratada" type="text" v-model="obra.empresaContratada" readonly />
+        </div>
+        <div class="form-group">
+          <label for="cnpjContratada">CNPJ da Contratada</label>
+          <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
+        </div>
       </div>
+      
 
       <!-- Right Column -->
       <div class="form-column">
@@ -120,14 +129,6 @@ export default {
         <div class="form-group">
           <label for="numeroDoContrato">Número do Contrato</label>
           <input id="numeroDoContrato" type="text" v-model="obra.numeroDoContrato" readonly />
-        </div>
-        <div class="form-group">
-          <label for="empresaContratada">Empresa Contratada</label>
-          <input id="empresaContratada" type="text" v-model="obra.empresaContratada" readonly />
-        </div>
-        <div class="form-group">
-          <label for="cnpjContratada">CNPJ da Contratada</label>
-          <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
         </div>
       </div>
     </div>
