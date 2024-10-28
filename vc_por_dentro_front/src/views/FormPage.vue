@@ -61,15 +61,6 @@ onMounted(fetchData)
       <!-- Left Column -->
       <div class="form-column">
         <div class="form-group">
-          <label for="codigoObra">Código da Obra</label>
-          <input
-            id="codigoObra"
-            type="text"
-            v-model="obra.codigoObra"
-            readonly
-          />
-        </div>
-        <div class="form-group">
           <label for="processo">Processo</label>
           <input id="processo" type="text" v-model="obra.processo" readonly />
         </div>
@@ -112,7 +103,16 @@ onMounted(fetchData)
           <label for="local">Local</label>
           <input id="local" type="text" v-model="obra.local" readonly />
         </div>
+        <div class="form-group">
+          <label for="empresaContratada">Empresa Contratada</label>
+          <input id="empresaContratada" type="text" v-model="obra.empresaContratada" readonly />
+        </div>
+        <div class="form-group">
+          <label for="cnpjContratada">CNPJ da Contratada</label>
+          <input id="cnpjContratada" type="text" v-model="obra.cnpjContratada" readonly />
+        </div>
       </div>
+      
 
       <!-- Right Column -->
       <div class="form-column">
@@ -161,15 +161,6 @@ onMounted(fetchData)
           <input id="status" type="text" v-model="obra.status" readonly />
         </div>
         <div class="form-group">
-          <label for="fontesDeRecurso">Fontes de Recurso</label>
-          <input
-            id="fontesDeRecurso"
-            type="text"
-            v-model="obra.fontesDeRecurso"
-            readonly
-          />
-        </div>
-        <div class="form-group">
           <label for="dtInicioDaObra">Data de Início da Obra</label>
           <input
             id="dtInicioDaObra"
@@ -193,33 +184,6 @@ onMounted(fetchData)
             id="numeroDoContrato"
             type="text"
             v-model="obra.numeroDoContrato"
-            readonly
-          />
-        </div>
-        <div class="form-group">
-          <label for="empresaContratada">Empresa Contratada</label>
-          <input
-            id="empresaContratada"
-            type="text"
-            v-model="obra.empresaContratada"
-            readonly
-          />
-        </div>
-        <div class="form-group">
-          <label for="cnpjContratada">CNPJ da Contratada</label>
-          <input
-            id="cnpjContratada"
-            type="text"
-            v-model="obra.cnpjContratada"
-            readonly
-          />
-        </div>
-        <div class="form-group">
-          <label for="programaDeMetas">Programa de Metas</label>
-          <input
-            id="programaDeMetas"
-            type="text"
-            v-model="obra.programaDeMetas"
             readonly
           />
         </div>
