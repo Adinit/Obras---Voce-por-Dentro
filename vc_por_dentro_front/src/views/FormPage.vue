@@ -78,7 +78,7 @@ export default {
 
 <template>
   <div class="form-container">
-    <h2>Detalhes da Obra</h2>
+    <h2>Detalhes Da Obra</h2>
     <h3>{{ rightColumnAttributes['nomeDaObra'] }}</h3>
     <div class="form-row">
       <Map
